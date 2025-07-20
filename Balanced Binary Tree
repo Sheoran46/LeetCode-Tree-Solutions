@@ -1,0 +1,45 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    class Info{
+        int lh;
+        int rh;
+        public Info(int lh,int rh){
+            this.lh=lh;
+            this.rh=rh;
+        }
+    }
+    public Info balanced(TreeNode root){
+        if(root==null)
+        return new Info(0,0);
+        Info leftInfo=balanced(root.left);
+        Info rightInfo=balanced(root.right);
+        int diff1=Math.abs(leftInfo.lh-leftInfo.rh);
+        int diff2=Math.abs(rightInfo.lh-rightInfo.rh);
+        if(diff1>1 || diff2>1)
+        return new Info(-1,1);
+        int max1=Math.max(leftInfo.lh,leftInfo.rh)+1;
+        int max2=Math.max(rightInfo.lh,rightInfo.rh)+1;
+        if(Math.abs(max1-max2)>1)
+        return new Info(-1,1);
+        return new Info(max1,max2);
+    }
+    public boolean isBalanced(TreeNode root) {
+        Info diff=balanced(root);
+        int diff2=Math.abs(diff.lh-diff.rh);
+        return diff2>1 ? false: true;
+    }
+}
